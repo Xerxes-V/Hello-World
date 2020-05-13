@@ -1,0 +1,124 @@
+package com.Xerxes.lambda;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.junit.Test;
+
+/*
+	 *	一、Lambda表达式的基础语法：Java8中新增了一个操作符“->” 该操作符称为箭头操作符或者Lambda操作符
+	 *				箭头将Lambda表达式拆分成两部分： 
+	 * 
+	 * 左侧：Lambda 表达式的参数列表	（对应接口中方法的参数列表）
+	 * 右侧：Lambda 表达式中所需执行的功能，即 Lambda 体		（方法的实现）
+	 * 
+	 * 语法格式一：	无参数无返回值方法：
+	 * 		() -> System.out.println("Hello Lambda");
+	 * 
+	 * 语法格式二：	有一个参数并且无返回值：
+	 * 		 (x) ->  System.out.println(x);
+	 * 
+	 * 语法格式三： 	若只有一个参数，则小括号可以省略不写，并且无返回值
+	 * 
+	 * 语法格式四：	有两个以上的参数，并且Lambda体中有多条语句，并且有返回值
+	 * 		Comparator<Integer> com = (x,y) ->{					//若有多条语句，则Lambda体必须使用大括号
+				System.out.println("函数接口");
+				return Integer.compare(x, y);
+				
+			};
+			
+			
+			
+	 * 语法格式五：	有两个以上的参数，只有一条语句，return和大括号都可以省略不写
+	 * 		Comparator<Integer> com = (x,y) -> Integer.compare(x, y);
+	 * 
+	 * 语法格式6：Lambda表达式的参数列表的数据类型可以省略不写，因为 JVM 可通过上下文推断出数据类型，即“类型推断”
+	 * 		Comparator<Integer> com = (Integer x, Integer y) -> Integer.compare(x, y);
+	 * 
+	 * 左右遇一括号省
+	 * 左侧推断类型省
+	 * 
+	 * 二、Lambda 表达式需要“函数式接口”的支持
+	 * 函数式接口：	接口中只有一个抽象方法。			//可以使用注解 @Functionalinterface 修饰。可以检查是否为函数式接口。若不是则会出错
+	 * 
+	 * 
+	*/
+
+	public class LAMBDA {
+		
+		@Test
+		public void test1() {
+			Runnable r = new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					System.out.println("Hello World");
+				}
+			};			//以前，匿名内部类方式实现接口
+			r.run();
+			
+			System.out.println("------------------------");
+			
+			Runnable r1 = () -> System.out.println("Hello World");
+			r1.run();
+			
+		}
+		
+		@Test
+		public void test2() {
+			Consumer<String> con = (x) ->  System.out.println(x); 		//x是一个传递过去的String类型参数
+			Consumer<String> conn = x ->  System.out.println(x); 		
+			con.accept("Hello World");
+			
+			
+		}
+		
+		
+		@Test
+		public void test4() {
+			Comparator<Integer> com = (x,y) ->{					//若有多条语句，则Lambda体必须使用大括号
+				System.out.println("函数接口");
+//				return Integer.compare(x, y);
+				return x;
+				
+			};
+			
+			Integer a = new Integer(0); 
+					a = com.compare(33, 44);
+			System.out.println(a);
+		}
+		
+		@Test
+		public void test5() {
+			Comparator<Integer> com = (x,y) -> Integer.compare(x, y);
+			
+			Integer a = new Integer(0); 
+			a = com.compare(33, 44);
+			System.out.println(a);
+		}
+		
+		public void test6() {
+			List<String> list = new ArrayList<>();
+		}
+		
+		
+		
+		//需求：对一个属进行运算。
+		@Test
+		public void test7() {
+			MyInterface my = (x) -> x * x;
+			Integer num = opperation(100, my);
+			System.out.println(num);
+			
+			Integer num2 = opperation(100, (x) -> x+x);
+			System.out.println(num2);
+		}
+		public Integer opperation(Integer num,MyInterface my) {
+			
+			return my.getValue(num);
+		}
+		
+}
